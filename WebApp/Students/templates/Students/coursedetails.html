@@ -1,0 +1,53 @@
+{% extends "Students/base.html" %}
+{% block content %}
+
+<body>
+    <div class = "container">
+        <div class = "jumbotron">
+            <h1>Course Details</h1>
+        </div>
+    </div>
+<div class = "container">
+    <table class = "table">
+        <thead>
+            <tr>
+                <th>Course Title</th>
+                <th>Course Name</th>
+                <th>Course Section Code</th>
+                <th>Course Department</th>
+                <th>Instructor</th>
+                <th>Course ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+
+                <td>{{ row.CourseTitle }}</td>
+                <td>{{ row.CourseName }}</td>
+                <td>{{ row.CourseSectionCode }}</td>
+                <td>{{ row.CourseDepartment }}</td>
+                <td>{{ row.InstructorFullName }}</td>
+                <td>{{ row.IdCourse }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class = "pagination">
+        <span class = "step-links">
+            {% if data.has_previous %}
+                <a href = "?page={{ data.previous_page_number }}">Previous</a>
+            {% endif %}
+            <span class = "current">
+                Page {{ data.number }} of {{ data.paginator.num_pages }}
+            </span>
+            {% if data.has_next %}
+                <a href = "?page= {{ data.next_page_number }}">Next</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "Students/base.html" %}
+{% block content %}
+
+<div class = "container">
+        <div class = "jumbotron">
+            <h1>Enrollment</h1>
+        </div>
+</div>
+
+<div class="container">
+    <select id = "StudentId">
+        {% if request.session.StudentId %}
+            <option selected = {{ request.session.StudentId }}>{{ request.session.StudentId }}</option>
+        {% else %}
+            <option selected = "">Select StudentID</option>
+        {% endif %}
+        {% for StudentId in studentdata %}
+            <option value = "{{ StudentId.StudentId }}">{{ StudentId.StudentId }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class = "container">
+    <select id = "IdCourse">
+        <option selected = "">Select Course ID</option>
+        {% for IdCourse in coursedata %}
+            <option value = "{{IdCourse.IdCourse }}">{{ IdCourse.IdCourse }}</option>
+        {% endfor %}
+    </select>
+    <button type = "button" id = "ebtn" class = "btn btn-primary">Enroll</button>
+</div>
+
+
+<div class = "container">
+    <table class = "table">
+        <thead>
+        <tr>
+            <th>StudentID</th>
+            <th>CourseID</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for row in enrollmentdata %}
+                <tr>
+                    <td>{{ row.StudentId }}</td>
+                    <td>{{ row.IdCourse }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("#ebtn").click(function(){
+            $.ajax({
+                url: "{% url 'enrollment' %}",
+                data: {
+                    StudentId: $("#StudentId").val(),
+                    IdCourse: $("#IdCourse").val(),
+                },
+                success: function(data)
+                {
+                    if(data == 'Success')
+                    {
+                        window.location = "{% url 'enrollment' %}"
+                    }
+                    else {
+                        alert("Student cannot be enrolled!")
+                    }
+                }
+            });
+        });
+
+        $("#StudentId").change(function()
+        {
+            $.ajax(
+            {
+                url: "{% url 'enrollment' %}",
+                data: {
+                    StudentId: $("#StudentId").val()
+                },
+                success: function(data){
+                    window.location = "{% url 'enrollment' %}"
+                }
+            });
+        });
+    });
+
+</script>
+
+{% endblock %}
